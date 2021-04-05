@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script src="/js/src/photoswipe.min.js?v="></script>
+<script src="/js/src/photoswipe-ui-default.min.js?v="></script>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/tubiao32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/tubiao16.png">
+  <link rel="mask-icon" href="/images/tubiao.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT Serif:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="准备面试的过程中发现自己对于统计学这一块理解还不够深，很多明白的理论不知道要如何表达出来，所以在这里汇总一下，方便以后的复习。                           本系列文章均为知识汇总，所有copyright都属于原作者所有，在这里摘抄仅为自用。🈲搬运。  前言打算按照这样的顺序整理一下知识点：  基础概念 常见的定律和定理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统计相关知识点汇总（一）">
+<meta property="og:url" content="http://example.com/2021/04/05/statistics-review-1/index.html">
+<meta property="og:site_name" content="Yvonne&#39;s Blog">
+<meta property="og:description" content="准备面试的过程中发现自己对于统计学这一块理解还不够深，很多明白的理论不知道要如何表达出来，所以在这里汇总一下，方便以后的复习。                           本系列文章均为知识汇总，所有copyright都属于原作者所有，在这里摘抄仅为自用。🈲搬运。  前言打算按照这样的顺序整理一下知识点：  基础概念 常见的定律和定理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-05T15:20:02.000Z">
+<meta property="article:modified_time" content="2021-04-05T17:50:19.270Z">
+<meta property="article:author" content="Yvonne">
+<meta property="article:tag" content="中文好难">
+<meta property="article:tag" content="明明知道的知识要怎么用人话表达出来">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/04/05/statistics-review-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>统计相关知识点汇总（一） | Yvonne's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yvonne's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">迷茫升级打怪的小白</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首 页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关 于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归 档</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/photos/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>影 集</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标 签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分 类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜 索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/05/statistics-review-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/aaa.JPG">
+      <meta itemprop="name" content="Yvonne">
+      <meta itemprop="description" content="You are in your own time zone.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yvonne's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          统计相关知识点汇总（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-05 17:20:02 / 修改时间：19:50:19" itemprop="dateCreated datePublished" datetime="2021-04-05T17:20:02+02:00">2021-04-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">统计学</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>准备面试的过程中发现自己对于统计学这一块理解还不够深，很多明白的理论不知道要如何表达出来，所以在这里汇总一下，方便以后的复习。</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<div class="note warning"><p>本系列文章均为知识汇总，所有copyright都属于原作者所有，在这里摘抄仅为自用。🈲搬运。</p></div>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>打算按照这样的顺序整理一下知识点：<br></p>
+<ul>
+<li>基础概念</li>
+<li>常见的定律和定理</li>
+<li>常用系数</li>
+<li>有意思的理论</li>
+</ul>
+ <span id="more"></span>
+<hr>
+<h2 id="基础理论"><a href="#基础理论" class="headerlink" title="基础理论"></a>基础理论</h2><h3 id="随机试验（Random-Experiment）"><a href="#随机试验（Random-Experiment）" class="headerlink" title="随机试验（Random Experiment）"></a>随机试验（Random Experiment）</h3><blockquote>
+<p>是在相同条件下对某<strong>随机现象进</strong>行的大量重复观测</p>
+</blockquote>
+<p>1.可以在相同的条件下重复的进行。<br>2.每次试验的可能结果不止一个，并且能事先明确试验的所有可能结果。<br>3.进行一次试验之前不能确定哪一个结果会出现， 重复实验的结果是以随机方式出现的</p>
+<p>随机试验通常用E表示</p>
+<p>随机事件数量化的<span class="label info">好处</span>是可以用数学分析的方法来研究随机现象。例如某一时间内公共汽车站等车乘客人数，电话交换台在一定时间内收到的呼叫次数，灯泡的寿命等等，都是随机变量的实例。</p>
+<span class="label warning">生活例子</span>：丢硬币，发放优惠券后用户是否会使用
+
+<h3 id="随机变量（Random-Variable）"><a href="#随机变量（Random-Variable）" class="headerlink" title="随机变量（Random Variable）"></a>随机变量（Random Variable）</h3><blockquote>
+<p>随机变量是指随机事件的数量表现，每个变量都可以随机的取得不同的数值。</p>
+</blockquote>
+<p>例如一批注入某种毒物的动物，在一定时间内死亡的只数；例如人口的男女性别、试验结果的阳性或阴性等，但我们可以规定男性为1，女性为0</p>
+<p>这些例子中所提到的量，尽管它们的具体内容是各式各样的，但从数学观点来看，它们表现了同一种情况，这就是每个变量都可以随机地取得不同的数值，而在进行试验或测量之前，我们要预言这个变量将取得某个确定的数值是不可能的。</p>
+<h3 id="随机变量的分类"><a href="#随机变量的分类" class="headerlink" title="随机变量的分类"></a>随机变量的分类</h3><p>按照随机变量可能取得的值，可以把它们分为两种基本类型：<br>两者的区别在于随机试验所有可能的结果数量是否<strong>可数（countable）</strong> (是否能按照一定的次序列举出来)。</p>
+<span class="label info">离散型（discrete）</span>：随机变量即在一定区间内变量取值为有限个或可数个。
+<p>例如某地区某年人口的出生数、死亡数，某药治疗某病病人的有效数、无效数等。<br>离散型随机变量通常依据概率质量函数分类，主要分为：伯努利随机变量、二项随机变量、几何随机变量和泊松随机变量。</p>
+<span class="label info">连续型（continuous）</span> ：随机变量即在一定区间内变量取值有无限个，或数值无法一一列举出来。
+<p>例如某地区男性健康成人的身长值、体重值，一批传染性肝炎患者的血清转氨酶测定值等。<br>有几个重要的连续随机变量常常出现在概率论中，如：均匀随机变量、指数随机变量、伽马随机变量和正态随机变量。</p>
+<h3 id="离散型随机变量分布-（discrete-distribution）"><a href="#离散型随机变量分布-（discrete-distribution）" class="headerlink" title="离散型随机变量分布 （discrete distribution）"></a>离散型随机变量分布 （discrete distribution）</h3><p>基本概念及公式<br>（1）数学期望（均值）：试验中每次可能结果的概率乘以其结果的总和。计算公式：</p>
+<p> $$\mu =E(x) =\sum xp(x)$$</p>
+<p>（2）方差：描述随机变量的离散程度，即该变量离其期望值的距离。</p>
+<p> $$\sigma^2 = E\left [ (x-\mu )^{2} \right]$$</p>
+<p>（3）标准差：方差的算术平方根。</p>
+<h4 id="伯努利分布-Bernoulli"><a href="#伯努利分布-Bernoulli" class="headerlink" title="伯努利分布(Bernoulli)"></a>伯努利分布(Bernoulli)</h4><p>伯努利试验是只有两种可能结果的单次随机试验。伯努利试验都可以表达为“是或否”的问题。例如，抛一次硬币，是否正面向上？</p>
+<p>进行一次伯努利试验，成功（X=1）概率为p（0≤p≤1），失败（X=0）概率为1-p，则称随机变量X服从伯努利分布。</p>
+<p>$$P(X = k) = p^{k{}}(1-p)^{1-k}$$<br>其中 k = 0,1</p>
+<h4 id="二项分布-Binominal"><a href="#二项分布-Binominal" class="headerlink" title="二项分布 (Binominal)"></a>二项分布 (Binominal)</h4><p>如果试验E是一个伯努利试验，将E独立重复地进行n次，则称这一串重复的独立试验为n重伯努利试验。二项分布是n重伯努利试验成功次数的离散概率分布。</p>
+<span class="label warning">生活例子</span>: 抛100次硬币，发优惠券
+
+<p>如果试验E是一个伯努利试验，每次伯努利试验的成功概率为p，X代表成功的次数，则X的概率分布是二项分布，记为X~B(n,p)。</p>
+<p>$$P(X = k) = \frac{n!}{k!(n-k)!} p^{^{k}} (1-p)^{(n-k)}$$</p>
+<span class="label info">重复独立（Independence）</span>
+<p>多次独立重复试验，又叫伯努利试验。是指在同样的条件下重复地、各次之间相互独立地进行的一种试验。这种试验中每一次试验只有两种结果，即某事件A要么发生，要么不发生。并且每次发生的概率都是相同的。</p>
+<h4 id="几何分布（Geometry）"><a href="#几何分布（Geometry）" class="headerlink" title="几何分布（Geometry）"></a>几何分布（Geometry）</h4><p>在n次伯努利试验中，第k次试验才得到第一次成功的概率分布称为几何分布。</p>
+<p>$$P(X = k) = (1-p)^{k-1}p$$<br>其中期望$E(X)=1/P$,方差$D(X)=\frac{1-p}{p^{2}}$。</p>
+<h4 id="泊松分布（Poisson）"><a href="#泊松分布（Poisson）" class="headerlink" title="泊松分布（Poisson）"></a>泊松分布（Poisson）</h4><p>泊松分布描述单位时间/面积内，随机事件发生的次数，比如某一服务设施一定时间内到达的人数，某网站或App在单位时间内访问的次数等。</p>
+<p>泊松概率的成立条件是在任意两个长度相等的区间中，时间发生的概率是相同的，并且事件是否发生都是相互独立的。</p>
+<p>泊松概率既然表示事件在一个区间发生的次数，这里的次数就不会有上限，x取值可以无限大，只是可能性无限接近0，f(x)的最终值很小。</p>
+<p>$$f(x)=\frac{\mu ^{x}e^{-\mu }}{x!}$$</p>
+<p>满足分布律<br>$$P(X =k) =\frac{\lambda ^{k}}{k!}e^{-\lambda }, k=0,1…$$</p>
+<h3 id="连续型随机变量分布"><a href="#连续型随机变量分布" class="headerlink" title="连续型随机变量分布"></a>连续型随机变量分布</h3><p>概率密度函数用来表示连续型随机变量的概率分布情况，一般是一条光滑的曲线。<br>首先要定义分布函数，通常用F(x) 来定义</p>
+<p>$$F(x)=Pr(X\leqslant x)$$</p>
+<span class="label info">分布函数（Cumulative Distribution）</span>
+<p>它是概率密度函数的积分。用P(X&lt;=x)表示随机变量小于或者等于某个数值的概率，F(x) = P(X&lt;=x)<br>概率密度函数（Probability Density Function）</p>
+<h4 id="均匀分布-Uniform-Distribution"><a href="#均匀分布-Uniform-Distribution" class="headerlink" title="均匀分布 (Uniform Distribution)"></a>均匀分布 (Uniform Distribution)</h4><p>均匀分布是指连续型随机变量所有可能出现值的出现概率都相同。其概率密度函数为： </p>
+<p>$$f(x) = \frac{1}{b-a} (a\leq x\leq b)$$<br>均匀分布表的期望为$E(X)=\frac{a+b}{2}$, 方差为$D(X)=E(X^{2})-\left [ E(X)^{2} \right ]=\frac{(b-a)^2}{12}$</p>
+<h4 id="正态分布-Normal-Distribution"><a href="#正态分布-Normal-Distribution" class="headerlink" title="正态分布 (Normal Distribution)"></a>正态分布 (Normal Distribution)</h4><p>正态分布是统计学中常见的一种分布，如学生考试成绩的人数分布等，表现为两边对称，是一种钟形的概率分布。正态分布的概率密度函数为：</p>
+<p>$$f(x) = \frac{1}{\sigma \sqrt{2\pi }} e^{-(1/2)\left [ \frac{z-\mu }{\sigma } ^{2}\right ]}$$</p>
+<p>正态分布的期望为$E(X)=\mu$, 方差$D(X)=\sigma^{2}$.</p>
+<p>$\mu=0$且$\sigma=1$的正态分布被称为标准正态分布，有对应的标准正态分布表，通过该表可以找到对应值累计的概率。</p>
+<p>随着数据量的增加，其均值的分布都会逼近正态分布 –&gt;<span class="label info">中心极限定理</span>（后面会提到）</p>
+<h4 id="指数分布-Exponential-Distribution"><a href="#指数分布-Exponential-Distribution" class="headerlink" title="指数分布 (Exponential Distribution)"></a>指数分布 (Exponential Distribution)</h4><p>指数分布通常用来表示随机事件发生的时间间隔，如旅客进机场的时间间隔、电子产品的寿命分布等。</p>
+<p>指数分布的特征：无记忆性。比如灯泡的使用寿命服从指数分布，无论它已经使用了多长时间，假设为s，只要还没有损坏，它能再使用一段时间t的概率与一件新产品使用时间t的概率是一样的。</p>
+<p>即事件以恒定的平均速率连续且独立发生的过程.</p>
+<h3 id="随机变量的常用特征"><a href="#随机变量的常用特征" class="headerlink" title="随机变量的常用特征"></a>随机变量的常用特征</h3><h4 id="数字特征"><a href="#数字特征" class="headerlink" title="数字特征"></a>数字特征</h4><p>1.期望<br>是试验中每次可能结果乘以其结果的概率的总和。简单说，它是概率中的平均值。E（X）随机变量X的平均水平。随机试验重复越多次，X的均值会愈发接近于E（X）</p>
+<p>2.方差和标准差<br>方差随机变量的变异性或者是分散程度的度量，刻画随机变量X的波动大小。方差越大，结果的未知性越大</p>
+<p>3.分位数（quantile）<br>是指将一个随机变量的概率分布范围分为几个等份的数值点，常用的有中位数（即二分位数）、四分位数、百分位数等.<br>在工作中可以依靠分位数的定义来监控异常数据， 比如我们设定一个合理的分位数区间 （0.05，0.95）， 若某一样本数值没有处于历史样本分位数之间，则需要对其进行重点排查</p>
+<p>4.协方差（covariance）<br>协方差表示的是两个变量的总体的误差，这与只表示一个变量误差的方差不同。 如果两个变量的变化趋势一致，也就是说如果其中一个大于自身的期望值，另外一个也大于自身的期望值，那么两个变量之间的协方差就是正值。 如果两个变量的变化趋势相反，即其中一个大于自身的期望值，另外一个却小于自身的期望值，那么两个变量之间的协方差就是负值。</p>
+<p>$$Cov_{xy}=\frac{\sum (x-\bar{x}) (y-\bar{y})}{n-1}=\frac{\sum xy-n\bar{xy} }{(n-1)} $$</p>
+<p>5.相关系数（correlation）<br>研究变量之间线性相关程度的量，取值范围是[-1,1]。<br>相关系数也可以看成协方差：一种剔除了两个变量量纲影响、标准化后的特殊协方差。</p>
+<p>$$Correlation = \frac{Cov_{x,y}}{\sigma_{x}\sigma_{y}}$$</p>
+<h4 id="期望和平均值"><a href="#期望和平均值" class="headerlink" title="期望和平均值"></a>期望和平均值</h4><blockquote>
+<p>概率是频率随样本趋于无穷的极限<br>期望是平均数随样本趋于无穷的极限<br>如果说概率是频率随样本趋于无穷的极限 ，期望就是平均数随样本趋于无穷的极限，可以看出均值和期望的联系也是大数定理联系起来的。</p>
+</blockquote>
+<h4 id="独立和不相关"><a href="#独立和不相关" class="headerlink" title="独立和不相关"></a>独立和不相关</h4><p>不相关 = 两者没有线性关系<br>独立 = 两者完全没有任何关系</p>
+<h4 id="独立同分布（iid）的随机变量（independently-identically-distribution）"><a href="#独立同分布（iid）的随机变量（independently-identically-distribution）" class="headerlink" title="独立同分布（iid）的随机变量（independently identically distribution）"></a>独立同分布（iid）的随机变量（independently identically distribution）</h4><p>在概率统计理论中，指随机过程中，任何时刻的取值都为随机变量，如果这些随机变量服从同一分布，并且互相独立，那么这些随机变量是独立同分布。</p>
+<p>如果随机变量X1和X2独立，是指X1的取值不影响X2的取值，X2的取值也不影响X1的取值且随机变量X1和X2服从同一分布，这意味着X1和X2具有相同的分布形状和相同的分布参数，对离散随机变量具有相同的分布律，对连续随机变量具有相同的概率密度函数，有着相同的分布函数，</p>
+<p>相同的期望、方差。如实验条件保持不变，一系列的抛硬币的正反面结果是独立同分布。</p>
+<h4 id="样本，样本和随机变量之间的关系"><a href="#样本，样本和随机变量之间的关系" class="headerlink" title="样本，样本和随机变量之间的关系"></a>样本，样本和随机变量之间的关系</h4><p>样本可以理解为每次随机试验的结果，观测值。 根据样本量的不同，将不同的随机试验成为样本量为n的随机试验。</p>
+<h3 id="异常值-离群点以及其检测方法"><a href="#异常值-离群点以及其检测方法" class="headerlink" title="异常值/离群点以及其检测方法"></a>异常值/离群点以及其检测方法</h3><h4 id="概率统计模型—均方差"><a href="#概率统计模型—均方差" class="headerlink" title="概率统计模型—均方差"></a>概率统计模型—均方差</h4><p>在统计学中，如果一个数据分布近似正态，那么大约 68% 的数据值会在均值的一个标准差范围内，大约 95% 会在两个标准差范围内，大约 99.7% 会在三个标准差范围内。</p>
+<h4 id="概率统计模型—箱形图"><a href="#概率统计模型—箱形图" class="headerlink" title="概率统计模型—箱形图"></a>概率统计模型—箱形图</h4><p>箱形图是数字数据通过其四分位数形成的图形化描述。这是一种非常简单但有效的可视化离群点的方法。考虑把上下触须作为数据分布的边界。任何高于上触须或低于下触须的数据点都可以认为是离群点或异常值。</p>
+<p>箱形图剖析：<br>四分位间距 (IQR) 的概念被用于构建箱形图。IQR 是统计学中的一个概念，通过将数据集分成四分位来衡量统计分散度和数据可变性。</p>
+<p>简单来说，任何数据集或任意一组观测值都可以根据数据的值以及它们与整个数据集的比较情况被划分为四个确定的间隔。四分位数会将数据分为三个点和四个区间。</p>
+<p>四分位间距对定义离群点非常重要。它是第三个四分位数和第一个四分位数的差 (IQR = Q3 -Q1)。在这种情况下，离群点被定义为低于箱形图下触须（或 Q1 − 1.5x IQR）或高于箱形图上触须（或 Q3 + 1.5x IQR）的观测值。</p>
+<h4 id="机器学习—孤立森林"><a href="#机器学习—孤立森林" class="headerlink" title="机器学习—孤立森林"></a>机器学习—孤立森林</h4><p>孤立森林是一种无监督学习算法，属于组合决策树家族。这种方法和以上所有方法都不同。之前的所有方法都在试图寻找数据的常规区域，然后将任何在此定义区域之外的点都视为离群点或异常值。</p>
+<p>这种方法的工作方式不同。它明确地隔离异常值, 而不是通过给每个数据点分配一个分数来分析和构造正常的点和区域。它利用了这样一个事实：异常值只是少数，并且它们具有与正常实例非常不同的属性值。</p>
+<h4 id="业务经验，逻辑规则"><a href="#业务经验，逻辑规则" class="headerlink" title="业务经验，逻辑规则"></a>业务经验，逻辑规则</h4><p>业务经验的丰富以及对数据的敏感性能更加直接地帮助理解异常数据，在一些轻量级的任务中，配置简单的逻辑规则也能达到很好的检测效果。</p>
+<h4 id="事先制定判定规则"><a href="#事先制定判定规则" class="headerlink" title="事先制定判定规则"></a>事先制定判定规则</h4><p>a）区间判定<br>给出一个阈值区间，实际观测落在区间之外则判定为异常。例如，在时间序列和回归分析中，预测值与真实值的残差序列便可构建这样一个区间。</p>
+<p>b）二分判定<br>二分判定的前提是数据包含人工标注。异常值标注为 1，正常值标注为 0，通过机器学习方法给出观测为异常的概率。</p>
+<h2 id="下集预告"><a href="#下集预告" class="headerlink" title="下集预告"></a>下集预告</h2><p>下篇写数分中广泛运用到的定律和定理</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/w2rtf2hreqninuque9jy">https://www.infoq.cn/article/w2rtf2hreqninuque9jy</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Yvonne
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2021/04/05/statistics-review-1/" title="统计相关知识点汇总（一）">http://example.com/2021/04/05/statistics-review-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载时麻烦注明一下出处，感谢~
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%AD%E6%96%87%E5%A5%BD%E9%9A%BE/" rel="tag"># 中文好难</a>
+              <a href="/tags/%E6%98%8E%E6%98%8E%E7%9F%A5%E9%81%93%E7%9A%84%E7%9F%A5%E8%AF%86%E8%A6%81%E6%80%8E%E4%B9%88%E7%94%A8%E4%BA%BA%E8%AF%9D%E8%A1%A8%E8%BE%BE%E5%87%BA%E6%9D%A5/" rel="tag"># 明明知道的知识要怎么用人话表达出来</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/03/get-started-with-hexo2/" rel="prev" title="小破博装修日记（二）—— 美化">
+      <i class="fa fa-chevron-left"></i> 小破博装修日记（二）—— 美化
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">基础理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E8%AF%95%E9%AA%8C%EF%BC%88Random-Experiment%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">随机试验（Random Experiment）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%EF%BC%88Random-Variable%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">随机变量（Random Variable）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">随机变量的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83-%EF%BC%88discrete-distribution%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">离散型随机变量分布 （discrete distribution）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%AF%E5%8A%AA%E5%88%A9%E5%88%86%E5%B8%83-Bernoulli"><span class="nav-number">2.4.1.</span> <span class="nav-text">伯努利分布(Bernoulli)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9%E5%88%86%E5%B8%83-Binominal"><span class="nav-number">2.4.2.</span> <span class="nav-text">二项分布 (Binominal)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83%EF%BC%88Geometry%EF%BC%89"><span class="nav-number">2.4.3.</span> <span class="nav-text">几何分布（Geometry）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83%EF%BC%88Poisson%EF%BC%89"><span class="nav-number">2.4.4.</span> <span class="nav-text">泊松分布（Poisson）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83"><span class="nav-number">2.5.</span> <span class="nav-text">连续型随机变量分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83-Uniform-Distribution"><span class="nav-number">2.5.1.</span> <span class="nav-text">均匀分布 (Uniform Distribution)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83-Normal-Distribution"><span class="nav-number">2.5.2.</span> <span class="nav-text">正态分布 (Normal Distribution)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83-Exponential-Distribution"><span class="nav-number">2.5.3.</span> <span class="nav-text">指数分布 (Exponential Distribution)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E5%B8%B8%E7%94%A8%E7%89%B9%E5%BE%81"><span class="nav-number">2.6.</span> <span class="nav-text">随机变量的常用特征</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%89%B9%E5%BE%81"><span class="nav-number">2.6.1.</span> <span class="nav-text">数字特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E5%92%8C%E5%B9%B3%E5%9D%87%E5%80%BC"><span class="nav-number">2.6.2.</span> <span class="nav-text">期望和平均值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E5%92%8C%E4%B8%8D%E7%9B%B8%E5%85%B3"><span class="nav-number">2.6.3.</span> <span class="nav-text">独立和不相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E5%90%8C%E5%88%86%E5%B8%83%EF%BC%88iid%EF%BC%89%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%EF%BC%88independently-identically-distribution%EF%BC%89"><span class="nav-number">2.6.4.</span> <span class="nav-text">独立同分布（iid）的随机变量（independently identically distribution）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B7%E6%9C%AC%EF%BC%8C%E6%A0%B7%E6%9C%AC%E5%92%8C%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.6.5.</span> <span class="nav-text">样本，样本和随机变量之间的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC-%E7%A6%BB%E7%BE%A4%E7%82%B9%E4%BB%A5%E5%8F%8A%E5%85%B6%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text">异常值&#x2F;离群点以及其检测方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E2%80%94%E5%9D%87%E6%96%B9%E5%B7%AE"><span class="nav-number">2.7.1.</span> <span class="nav-text">概率统计模型—均方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%E2%80%94%E7%AE%B1%E5%BD%A2%E5%9B%BE"><span class="nav-number">2.7.2.</span> <span class="nav-text">概率统计模型—箱形图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E2%80%94%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97"><span class="nav-number">2.7.3.</span> <span class="nav-text">机器学习—孤立森林</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E7%BB%8F%E9%AA%8C%EF%BC%8C%E9%80%BB%E8%BE%91%E8%A7%84%E5%88%99"><span class="nav-number">2.7.4.</span> <span class="nav-text">业务经验，逻辑规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%85%88%E5%88%B6%E5%AE%9A%E5%88%A4%E5%AE%9A%E8%A7%84%E5%88%99"><span class="nav-number">2.7.5.</span> <span class="nav-text">事先制定判定规则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E9%9B%86%E9%A2%84%E5%91%8A"><span class="nav-number">3.</span> <span class="nav-text">下集预告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Yvonne"
+      src="/images/aaa.JPG">
+  <p class="site-author-name" itemprop="name">Yvonne</p>
+  <div class="site-description" itemprop="description">You are in your own time zone.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yvonne</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">10k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6043ed645e355a43" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+  
+
+</body>
+</html>
